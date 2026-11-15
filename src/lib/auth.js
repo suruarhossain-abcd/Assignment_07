@@ -6,15 +6,25 @@ import { nextCookies } from 'better-auth/next-js';
 const uri = process.env.MONGODB_URL || process.env.MONGODB_URI;
 
 if (!uri) {
-  throw new Error('MongoDB URL is missing! Please check your .env file.');
+  throw new Error(
+    'MongoDB URL is missing! Please check your environment variables.',
+  );
 }
 
-const client = new MongoClient(uri);
+let client = global._mongoClient;
+
+if (!client) {
+  client = global._mongoClient = new MongoClient(uri, {
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+  });
+}
+
 const db = client.db('Bazar_Dor');
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
-  baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
+  baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   emailAndPassword: { enabled: true },
   socialProviders: {
