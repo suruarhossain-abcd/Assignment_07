@@ -16,7 +16,7 @@ let client = global._mongoClient;
 if (!client) {
   client = global._mongoClient = new MongoClient(uri, {
     maxPoolSize: 10,
-    serverSelectionTimeoutMS: 5000,
+    serverSelectionTimeoutMS: 15000, // ৫০০০ থেকে বাড়িয়ে ১৫০০০ করা হলো
   });
 }
 
@@ -24,7 +24,7 @@ const db = client.db('Bazar_Dor');
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
-  baseURL: process.env.BETTER_AUTH_URL,
+  baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
   secret: process.env.BETTER_AUTH_SECRET,
   emailAndPassword: { enabled: true },
   socialProviders: {
