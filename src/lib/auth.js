@@ -16,7 +16,7 @@ let client = global._mongoClient;
 if (!client) {
   client = global._mongoClient = new MongoClient(uri, {
     maxPoolSize: 10,
-    serverSelectionTimeoutMS: 15000, // ৫০০০ থেকে বাড়িয়ে ১৫০০০ করা হলো
+    serverSelectionTimeoutMS: 15000,
   });
 }
 
@@ -26,6 +26,10 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
   baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
   secret: process.env.BETTER_AUTH_SECRET,
+  trustedOrigins: [
+    'https://assignment-07-sigma.vercel.app',
+    'http://localhost:3000',
+  ],
   emailAndPassword: { enabled: true },
   socialProviders: {
     google: {
