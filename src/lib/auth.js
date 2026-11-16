@@ -3,7 +3,7 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { MongoClient } from 'mongodb';
 import { nextCookies } from 'better-auth/next-js';
 
-const uri = process.env.MONGODB_URL || process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URL;
 
 if (!uri) {
   throw new Error(
@@ -24,12 +24,7 @@ const db = client.db('Bazar_Dor');
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
-  baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
   secret: process.env.BETTER_AUTH_SECRET,
-  trustedOrigins: [
-    'https://assignment-07-sigma.vercel.app',
-    'http://localhost:3000',
-  ],
   emailAndPassword: { enabled: true },
   socialProviders: {
     google: {
