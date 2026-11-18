@@ -23,6 +23,12 @@ if (!client) {
 const db = client.db('Bazar_Dor');
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: [
+    'https://assignment-07-c5pg.vercel.app',
+    'https://*.vercel.app',
+    'http://localhost:3000',
+  ],
   database: mongodbAdapter(db, { client }),
   secret: process.env.BETTER_AUTH_SECRET,
   emailAndPassword: { enabled: true },
